@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Portfolio Chatbot</title>
+  <!-- CSS for Cyber Theme Chatbot -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    }
+    .user-msg {
+      background-color: #00f;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .bot-msg {
+      background-color: #0f0;
+      color: #000;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .chat-input {
+      width: calc(100% - 40px);
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    .send-btn {
+      background-color: #00f;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .send-btn:hover {
+      background-color: #0f0;
+    }
+  </style>
+<!DOCTYPE html>
+<html lang="en">
+    <div class="progress">
+        <div class="progress-bar" style="width: 75%;"></div>
+      </div>
+      <style>
+      .progress {
+        background-color: #333;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      
+      .progress-bar {
+        width: 0;
+        height: 20px;
+        background-color: #0f0;
+        transition: width 1s ease;
+      }
+      </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="adi.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Gunapriya</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+     
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="adi.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="portfolio.html">Portfolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="chatbot">Chatbot</a>
+          </li>
+          
+          <!-- Add more social media icons as needed -->
+        </ul>
+      </div>
+    </div>
+    </nav>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <div class="bot-msg">Hello! I'm your Cyber Portfolio Chatbot. How can I assist you today?</div>
+    </div>
+    <form id="chat-form">
+      <input type="text" id="user-input" class="chat-input" placeholder="Type your message...">
+      <button type="submit" class="send-btn">Send</button>
+    </form>
+  </div>
+
+  <!-- Dialogflow Client Library -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+
+  <script>
+    // Initialize Dialogflow Chatbot
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatbox = document.getElementById('chat-box');
+      const chatForm = document.getElementById('chat-form');
+      const userInput = document.getElementById('user-input');
+
+      // Replace 'YOUR_CLIENT_ACCESS_TOKEN' with your Dialogflow Client Access Token
+      window.dfMessenger.init({
+        accessToken: 'YOUR_CLIENT_ACCESS_TOKEN',
+        chatId: 'chat-box',
+        htmlBox: chatbox,
+      });
+
+      chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!userInput.value) return;
+        
+        // Display user message in chat
+        const userMsg = `<div class="user-msg">${userInput.value}</div>`;
+        chatbox.innerHTML += userMsg;
+
+        // Send user message to Dialogflow
+        window.dfMessenger.sendText(userInput.value);
+
+        // Clear input after sending
+        userInput.value = '';
+      });
+    });
+    chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!userInput.value) return;
+        
+        // Display user message in chat
+        const userMsg = `<div class="user-msg">${userInput.value}</div>`;
+        chatbox.innerHTML += userMsg;
+
+        // Send user message to Dialogflow
+        window.dfMessenger.sendText(userInput.value);
+
+        // Clear input after sending
+        userInput.value = '';
+      });
+
+      // Function to handle Dialogflow responses
+      window.addEventListener('dfMessenger.response', function (event) {
+        const response = event.detail.response;
+        const botMsg = `<div class="bot-msg">${response}</div>`;
+        chatbox.innerHTML += botMsg;
+
+        // Check for specific responses and trigger corresponding functions
+        handlePortfolioQuestions(response);
+      });
+
+      // Function to handle specific portfolio questions
+      function handlePortfolioQuestions(response) {
+        if (response.includes('about me')) {
+          aboutMeResponse();
+        } else if (response.includes('my projects')) {
+          myProjectsResponse();
+        } else if (response.includes('contact information')) {
+          contactInfoResponse();
+        }
+        // Add more conditions for other questions as needed
+      }
+
+      // Functions for Portfolio Responses
+      function aboutMeResponse() {
+        const msg = "I am a web developer passionate about creating innovative and visually appealing websites.";
+        const botMsg = `<div class="bot-msg">${msg}</div>`;
+        chatbox.innerHTML += botMsg;
+      }
+
+      function myProjectsResponse() {
+        const msg = "I have worked on various projects including [Project 1], [Project 2], and [Project 3].";
+        const botMsg = `<div class="bot-msg">${msg}</div>`;
+        chatbox.innerHTML += botMsg;
+      }
+
+      function contactInfoResponse() {
+        const msg = "You can contact me at example@email.com.";
+        const botMsg = `<div class="bot-msg">${msg}</div>`;
+        chatbox.innerHTML += botMsg;
+      }
+    
+
+  
+ 
+
+
+    
+  </script>
+</body>
+</html>
